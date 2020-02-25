@@ -14,6 +14,7 @@ cx = WIDTH//2
 cy = HEIGHT//2
 cr = 50
 score = 0
+textScore = str(score)
 
 
 @window.event("on_draw")
@@ -23,12 +24,13 @@ def game_loop():
     global cy
     global cr
     global score
+    global textScore
     # update your variables here.
-    textScore = '"', score, '"'
+    textScore = str(score)
     # Draw things here.
     arcade.start_render()
     arcade.draw_circle_filled(cx, cy, cr, arcade.color.ORANGE_PEEL)
-    arcade.draw_text(textScore, 50, 50, arcade.color.BLACK, 20)
+    arcade.draw_text(textScore, 30, HEIGHT-20, arcade.color.BLACK, 14)
 
 
 @window.event
@@ -37,15 +39,19 @@ def on_mouse_press(mox, moy, button, modifiers):
     global cr
     global cx
     global cy
+    global score
     sideA = max(cx - mox, mox - cx)
     sideB = max(cy - moy, moy - cy)
     distance = math.sqrt(sideA * sideA + sideB * sideB)
     # Update variables
     if distance <= cr:
+        score += 1
         for _ in range(1):
             cr = randint(20, 80)
             cx = randint(5, WIDTH-5)
             cy = randint(5, HEIGHT-5)
+    else:
+        score -= 2147483647
     print(f"Location. x: {mox}, y: {moy}")
     print(f"Distance: {distance} Radius: {cr}")
 
