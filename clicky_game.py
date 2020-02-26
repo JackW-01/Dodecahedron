@@ -12,9 +12,10 @@ arcade.set_background_color(arcade.color.WHITE)
 # Initialize your variables here
 cx = WIDTH//2
 cy = HEIGHT//2
-cr = 50
+cr = 7
 score = 0
-textScore = str(score)
+textScore = f"Score: {score}"
+instructions = "Click the Circles! (Speed = more points!)"
 
 
 @window.event("on_draw")
@@ -26,11 +27,19 @@ def game_loop():
     global score
     global textScore
     # update your variables here.
-    textScore = str(score)
+    textScore = f"Score: {score}"
+    cr += 0.04
+    if cr >= 40:
+        cr = 7
+        score -= 2
+        for _ in range(1):
+            cx = randint(15, WIDTH-15)
+            cy = randint(15, HEIGHT-15)
     # Draw things here.
     arcade.start_render()
     arcade.draw_circle_filled(cx, cy, cr, arcade.color.ORANGE_PEEL)
-    arcade.draw_text(textScore, 30, HEIGHT-20, arcade.color.BLACK, 14)
+    arcade.draw_text(textScore, 50, HEIGHT-20, arcade.color.BLACK, 14)
+    arcade.draw_text(instructions, 500, HEIGHT-20, arcade.color.BLACK, 12)
 
 
 @window.event
@@ -45,13 +54,16 @@ def on_mouse_press(mox, moy, button, modifiers):
     distance = math.sqrt(sideA * sideA + sideB * sideB)
     # Update variables
     if distance <= cr:
-        score += 1
+        if cr <= 12:
+            score += 3
+        else:
+            score += 1
+        cr = 7
         for _ in range(1):
-            cr = randint(20, 80)
-            cx = randint(5, WIDTH-5)
-            cy = randint(5, HEIGHT-5)
+            cx = randint(15, WIDTH-15)
+            cy = randint(15, HEIGHT-15)
     else:
-        score -= 2147483647
+        score -= 2
     print(f"Location. x: {mox}, y: {moy}")
     print(f"Distance: {distance} Radius: {cr}")
 
