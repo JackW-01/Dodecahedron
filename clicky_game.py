@@ -10,9 +10,12 @@ window = arcade.Window(WIDTH, HEIGHT, "Bootleg Aimbooster")
 arcade.set_background_color(arcade.color.WHITE)
 
 # Initialize your variables here
-cx = WIDTH//2
-cy = HEIGHT//2
+cx = WIDTH // 2 + 30
+cy = HEIGHT // 2 + 30
 cr = 7
+cx_ = WIDTH // 2 - 30
+cy_ = HEIGHT // 2 - 30
+cr_ = 7
 score = 0
 textScore = f"Score: {score}"
 instructions = "Click the Circles! (Speed = more points!)"
@@ -24,20 +27,29 @@ def game_loop():
     global cx
     global cy
     global cr
+    global cx_
+    global cy_
+    global cr_
     global score
     global textScore
     # update your variables here.
     textScore = f"Score: {score}"
-    cr += 0.04
-    if cr >= 40:
-        cr = 7
-        score -= 2
-        for _ in range(1):
+    cr += 0.065
+    cr_ += 0.065
+    if cr >= 25 or cr_ >= 25:
+        score -= 4
+        if cr >= 25:
+            cr = 7
             cx = randint(15, WIDTH-15)
-            cy = randint(15, HEIGHT-15)
+            cy = randint(15, HEIGHT-30)
+        elif cr_ >= 25:
+            cr_ = 7
+            cx_ = randint(15, WIDTH-15)
+            cy_ = randint(15, HEIGHT-30)
     # Draw things here.
     arcade.start_render()
     arcade.draw_circle_filled(cx, cy, cr, arcade.color.ORANGE_PEEL)
+    arcade.draw_circle_filled(cx_, cy_, cr_, arcade.color.RED_ORANGE)
     arcade.draw_text(textScore, 50, HEIGHT-20, arcade.color.BLACK, 14)
     arcade.draw_text(instructions, 500, HEIGHT-20, arcade.color.BLACK, 12)
 
@@ -48,24 +60,35 @@ def on_mouse_press(mox, moy, button, modifiers):
     global cr
     global cx
     global cy
+    global cx_
+    global cy_
+    global cr_
     global score
     sideA = max(cx - mox, mox - cx)
     sideB = max(cy - moy, moy - cy)
     distance = math.sqrt(sideA * sideA + sideB * sideB)
+    sideA = max(cx_ - mox, mox - cx_)
+    sideB = max(cy_ - moy, moy - cy_)
+    distance_ = math.sqrt(sideA * sideA + sideB * sideB)
     # Update variables
     if distance <= cr:
-        if cr <= 12:
+        if cr <= 14:
             score += 3
         else:
             score += 1
         cr = 7
-        for _ in range(1):
-            cx = randint(15, WIDTH-15)
-            cy = randint(15, HEIGHT-15)
+        cx = randint(15, WIDTH-15)
+        cy = randint(15, HEIGHT-30)
+    elif distance_ <= cr_:
+        if cr <= 14:
+            score += 3
+        else:
+            score += 1
+        cr_ = 7
+        cx_ = randint(15, WIDTH-15)
+        cy_ = randint(15, HEIGHT-30)
     else:
         score -= 2
-    print(f"Location. x: {mox}, y: {moy}")
-    print(f"Distance: {distance} Radius: {cr}")
 
 
 arcade.run()
