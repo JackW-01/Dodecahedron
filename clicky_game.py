@@ -1,6 +1,5 @@
 from random import randint
-import math
-import arcade
+import math, arcade
 
 WIDTH = 800
 HEIGHT = 600
@@ -24,15 +23,7 @@ instructions = "Click the Circles! (Speed = more points!)"
 @window.event("on_draw")
 def game_loop():
     ''' Import global variables here. '''
-    global cx
-    global cy
-    global cr
-    global cx_
-    global cy_
-    global cr_
-    global score
-    global textScore
-    global misses
+    global cx, cy, cr, cx_, cy_, cr_, score, textScore, misses
     ''' Update your variables here. '''
     textScore = f"Score: {score}        Misses Left: {misses}"
     # When the radius >= 25: Miss and circle re-appears
@@ -67,14 +58,7 @@ def game_loop():
 @window.event
 def on_mouse_press(mox, moy, button, modifiers):
     ''' Import global variables '''
-    global cr
-    global cx
-    global cy
-    global cx_
-    global cy_
-    global cr_
-    global score
-    global misses
+    global cr, cx, cy, cx_, cy_, cr_, score, misses
     sideA = abs(cx - mox)
     sideB = abs(cy - moy)
     distance = math.sqrt(sideA ** 2 + sideB ** 2)
