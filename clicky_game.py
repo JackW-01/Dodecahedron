@@ -1,5 +1,6 @@
 from random import randint
-import math, arcade
+import math
+import arcade
 
 WIDTH = 800
 HEIGHT = 600
